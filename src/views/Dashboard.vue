@@ -1,0 +1,98 @@
+<script setup>
+
+</script>
+
+<template>
+
+<div class="container-fluid">
+
+  <div class="row mb-3">
+
+    <h4 class="text-black-50 my-3"><b>DASHBOARD</b></h4>
+            <!--Products-->
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card shadow h-100 py-2 border-primary border-4 border-bottom-0 border-top-0 border-end-0">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs fw-bold text-primary mb-1" style="font-size: 0.9em;">PRODUCTS COUNT</div>
+              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
+                <span class="spinner-border spinner-border-sm"></span> loading...</div> -->
+              <div class="h6 mb-0 fw-bold">&nbsp; {{ 6744.43 }}</div>
+            </div>
+            <div class="col-auto">
+              <span class="text-black-50" style="font-size: 250%">&#128290;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+                  <!-- Purchases -->
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card shadow h-100 py-2 border-warning border-4 border-bottom-0 border-top-0 border-end-0">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs fw-bold mb-1" style="font-size: 0.9em; color: darkgoldenrod">ANNUAL PURCHASES </div>
+              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
+                <span class="spinner-border spinner-border-sm"></span> loading...
+              </div> -->
+              <div class="h6 mb-0 fw-bold">GH¢ {{ 43.23 }}</div>
+            </div>
+            <div class="col-auto">
+              <span class="" style="font-size: 250%">&#128179;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card shadow h-100 py-2 border-danger border-4 border-bottom-0 border-top-0 border-end-0">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs fw-bold text-danger mb-1" style="font-size: 0.9em;">OUTSTANDING BILLS</div>
+              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
+                <span class="spinner-border spinner-border-sm"></span> loading...</div> -->
+              <div class="h6 mb-0 fw-bold">GH¢ {{ 6556.54 }}</div>
+            </div>
+            <div class="col-auto">
+              <span style="font-size: 250%">&#128176;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+                   <!-- Annual Sales -->
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card shadow h-100 py-2 border-success border-4 border-bottom-0 border-top-0 border-end-0">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs fw-bold text-success mb-1" style="font-size: 0.9em;">ANNUAL SALES</div>
+              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
+                <span class="spinner-border spinner-border-sm"></span> loading...</div> -->
+              <div class="h6 mb-0 fw-bold">GH¢ {{ 756 }}</div>
+            </div>
+            <div class="col-auto">
+                <span style="font-size: 250%">
+                  &#128181;
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+</template>
+
+<style scoped>
+
+
+</style>

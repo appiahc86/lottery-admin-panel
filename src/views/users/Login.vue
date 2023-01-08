@@ -3,12 +3,10 @@
 </script>
 
 <template>
-
-<h1>Welcome Home</h1>
-
+<h4>Login</h4>
 </template>
 
-<style scoped>
 
+<style scoped>
 
 </style>
