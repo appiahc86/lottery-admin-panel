@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import {useHomeStore} from "../store/home.js";
+
 import Home from '../views/Home.vue';
 import Dashboard from '../views/Dashboard.vue';
 import clientUserRouter from  "./users/clients/index";
-import {useHomeStore} from "../store/home.js";
 import  userRouter from "./users/index.js";
+import imagesRouter from "./images/index.js";
 
 
 const routes = [
@@ -23,6 +25,7 @@ const routes = [
     //Load imported routes
     ...userRouter,
     ...clientUserRouter,
+    ...imagesRouter,
 
 //    redirect to home page if route not found
     {

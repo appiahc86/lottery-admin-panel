@@ -61,7 +61,6 @@ getUsers();
 const searchUser = async () => {
   try {
     submitting.value = true;
-    console.log(searchTerm.value)
     const response = await  axios.post('/admin/clientUsers/search',
         JSON.stringify({phone: searchTerm.value}),
         {
@@ -72,7 +71,6 @@ const searchUser = async () => {
     if (response.status === 200){
       searchedUser.value = response.data;
       userDialog.value.showModal();
-      console.log(response.data)
     }
 
   }catch (e) {
@@ -104,7 +102,7 @@ const onPage = (event) => {
       <form @submit.prevent="searchUser">
         <div class="input-group">
           <input type="tel" class="p-inputtext p-inputtext-sm" @input="validatePhoneNumber"
-                 maxlength="10" v-model.number="searchTerm" placeholder="Search Number">
+                 maxlength="10" v-model.number="searchTerm" placeholder="Search Number" required>
           <button type="submit" class="p-button p-button-sm" :disabled="submitting">
             <span :class="submitting ? 'spinner-border spinner-border-sm' : 'pi pi-search'"></span>
           </button>
@@ -144,7 +142,7 @@ const onPage = (event) => {
           <table class="table table-bordered table-striped">
             <tr>
               <th>Phone</th>
-              <td>{{ searchedUser.phone }}</td>
+              <td>0{{ searchedUser.phone }}</td>
             </tr>
             <tr>
               <th>Network</th>

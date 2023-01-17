@@ -1,8 +1,9 @@
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 window.toast = useToast();
+
 
 onMounted(() => {
   const sidebarToggler = document.querySelector("#menu-toggle");
@@ -27,16 +28,29 @@ onMounted(() => {
         <li>
           <router-link :to="{name: 'home'}">Home</router-link>
         </li>
-
          <li>
             <router-link :to="{name: 'client-users'}">Users</router-link>
         </li>
-
+        <li>
+         <div class="dropdown">
+          <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Images
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><router-link :to="{name: 'images'}">View Images</router-link></li>
+            <li><router-link :to="{name: 'upload-images'}">Upload Image</router-link></li>
+            <li><router-link :to="{name: 'arrange-images'}">Arrange Images</router-link></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Separated link</a></li>
+          </ul>
+        </div>
+      </li>
     </ul>
+
 </div>
 <!-- /#sidebar-wrapper -->
 
-
+<!--Navbar-->
 <nav class="navbar bg-light">
   <div class="container-fluid">
     <a class="navbar-brand py-0" style="cursor: pointer;" id="menu-toggle">
@@ -68,7 +82,9 @@ onMounted(() => {
 body {
     overflow-x: hidden;
  }
-
+.dropdown-toggle {
+  cursor: pointer;
+}
  .router-link-exact-active {
   color: #fff !important;
   background: none !important;
