@@ -69,18 +69,7 @@ const errorHandler = async (event) => {
     </template>
   </FileUpload>
   <div class=""></div>
-<!--  <FileUpload name="images[]" :customUpload="true" :multiple="true" @uploader="uploader"-->
-<!--              accept="image/*" :maxFileSize="200000"  @error="errorHandler($event)">-->
 
-<!--    <template #content>-->
-<!--      <ul v-if="uploadedFiles && uploadedFiles[0]">-->
-<!--        <li v-for="file of uploadedFiles[0]" :key="file">{{ file.name }} - {{ file.size }} bytes</li>-->
-<!--      </ul>-->
-<!--    </template>-->
-<!--    <template #empty>-->
-<!--      <p>Images will be displayed here</p>-->
-<!--    </template>-->
-<!--    </FileUpload>-->
 </template>
 
 

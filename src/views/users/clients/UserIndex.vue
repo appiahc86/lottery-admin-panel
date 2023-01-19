@@ -5,6 +5,8 @@ import { formatNumber } from "../../../functions/index.js";
 import DataTable from 'primevue/datatable';
 import Button from "primevue/button";
 import Column from 'primevue/column';
+import { useHomeStore } from "../../../store/home.js";
+const store = useHomeStore();
 
 const loading = ref(null);
 const submitting = ref(false);
@@ -32,7 +34,7 @@ const getUsers = async () => {
             page: page.value,
             pageSize: pageSize.value,
           },
-          // headers: { 'Authorization': `Bearer ${store.token}`}
+          headers: { 'Authorization': `Bearer ${store.token}`}
         }
     )
 

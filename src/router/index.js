@@ -6,6 +6,7 @@ import Dashboard from '../views/Dashboard.vue';
 import clientUserRouter from  "./users/clients/index";
 import  userRouter from "./users/index.js";
 import imagesRouter from "./images/index.js";
+import drawRouter from "./draw/index.js";
 
 
 const routes = [
@@ -26,6 +27,7 @@ const routes = [
     ...userRouter,
     ...clientUserRouter,
     ...imagesRouter,
+    ...drawRouter,
 
 //    redirect to home page if route not found
     {

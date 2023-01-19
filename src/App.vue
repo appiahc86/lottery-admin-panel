@@ -22,26 +22,38 @@ onMounted(() => {
 <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <router-link :to="{name: 'dashboard'}">Dashboard</router-link>
+          <router-link :to="{name: 'dashboard'}"><span class="pi pi-home"></span> Dashboard</router-link>
         </li>
         
         <li>
-          <router-link :to="{name: 'home'}">Home</router-link>
+          <router-link :to="{name: 'home'}"><span class="pi pi-home"></span> Home</router-link>
         </li>
          <li>
-            <router-link :to="{name: 'client-users'}">Users</router-link>
+            <router-link :to="{name: 'client-users'}"><span class="pi pi-users"></span> Users</router-link>
         </li>
         <li>
          <div class="dropdown">
           <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+<!--            <span class="pi pi-images"></span>-->
+            <span class="pi pi-home"></span>
             Images
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
+          <ul class="dropdown-menu dropdown-menu-dark w-100">
             <li><router-link :to="{name: 'images'}">View Images</router-link></li>
             <li><router-link :to="{name: 'upload-images'}">Upload Image</router-link></li>
-            <li><router-link :to="{name: 'arrange-images'}">Arrange Images</router-link></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Separated link</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="dropdown">
+          <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <!--            <span class="pi pi-images"></span>-->
+            <span class="pi pi-home"></span>
+            Draw
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark w-100">
+            <li><router-link :to="{name: 'draw-numbers'}">Enter Draw Numbers</router-link></li>
+            <li><router-link :to="{name: 'draw'}">Perform Draw</router-link></li>
           </ul>
         </div>
       </li>
@@ -56,6 +68,11 @@ onMounted(() => {
     <a class="navbar-brand py-0" style="cursor: pointer;" id="menu-toggle">
       <h3 class="pi pi-bars"></h3>
     </a>
+    <div class="justify-content-center mx-auto">
+      <div class="navbar-nav">
+        <a class="nav-link fw-bold">sms: 4534</a>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -64,8 +81,6 @@ onMounted(() => {
 <div class="px-2">
   <router-view></router-view>
 </div>
-
-<!-- /#page-content-wrapper -->
 
 
 </div>
