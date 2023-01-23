@@ -148,9 +148,9 @@ const viewImage = async (image) => {
                       @click="confirmDelete(slotProps.item)" title="Delete">
                 <span class="text-white fw-bold p-1">x</span>
               </button>
-              <button class="justify-content-end mt-2 btn btn-success btn-sm"
-                      @click="viewImage(slotProps.item)" title="View">
-                <span class="pi pi-eye"></span></button>
+<!--              <button class="justify-content-end mt-2 btn btn-success btn-sm"-->
+<!--                      @click="viewImage(slotProps.item)" title="View">-->
+<!--                <span class="pi pi-eye"></span></button>-->
             </div>
           </div>
         </template>

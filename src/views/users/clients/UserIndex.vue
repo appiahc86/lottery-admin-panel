@@ -119,7 +119,11 @@ const onPage = (event) => {
                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport
                    RowsPerPageDropdown" responsiveLayout="scroll"
                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-          <Column field="phone" header="Phone" ref="company" :sortable="true" class="data-table-font-size">
+          <template #loading>
+            <h6 class="text-white fw-bold">Loading data Please wait. <span class="spinner-border spinner-border-sm"></span></h6>
+
+          </template>
+          <Column field="phone" header="Phone" :sortable="true" class="data-table-font-size">
             <template #body="{data}">
               <td>
                 {{ '0' + data.phone}}
