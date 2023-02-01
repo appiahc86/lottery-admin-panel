@@ -1,4 +1,44 @@
 <script setup>
+import axios from "@/axios";
+import {ref} from "vue";
+const loading = ref(false);
+import {useHomeStore} from "@/store/home";
+import {formatNumber} from "@/functions";
+
+const store  = useHomeStore();
+
+const userCount = ref(0);
+//Get data
+const getData = async () => {
+  try {
+    loading.value = true;
+    const response = await  axios.get('/admin/dashboard',
+        {
+          headers: { 'Authorization': `Bearer ${store.token}`}
+        }
+    )
+
+    if (response.status === 200){
+      userCount.value = response.data.userCount;
+    }
+
+  }catch (e) {
+    console.log(e.message)
+    if (e.response) return toast.add({severity:'warn', summary: 'Error', detail: `${e.response.data}`, life: 4000});
+    if (e.request && e.request.status === 0) {
+      return toast.add({severity:'error', summary: 'Error',
+        detail: `Sorry, Connection to Server refused. Please check your internet connection or try again later`,
+        life: 4000});
+    }
+
+    return toast.add({severity:'warn', summary: 'Error', detail: 'Sorry, something went wrong. Please try again later',
+      life: 4000});
+  }finally { loading.value = false; }
+
+}
+
+getData();
+
 
 </script>
 
@@ -15,10 +55,10 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs fw-bold text-primary mb-1" style="font-size: 0.9em;">PRODUCTS COUNT</div>
+              <div class="text-xs fw-bold text-primary mb-1" style="font-size: 0.9em;">USERS COUNT</div>
               <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
                 <span class="spinner-border spinner-border-sm"></span> loading...</div> -->
-              <div class="h6 mb-0 fw-bold">&nbsp; {{ 6744.43 }}</div>
+              <div class="h6 mb-0 fw-bold">&nbsp; {{ formatNumber(userCount) }}</div>
             </div>
             <div class="col-auto">
               <span class="text-black-50" style="font-size: 250%">&#128290;</span>
@@ -33,11 +73,11 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs fw-bold mb-1" style="font-size: 0.9em; color: darkgoldenrod">ANNUAL PURCHASES </div>
-              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
+              <div class="text-xs fw-bold mb-1" style="font-size: 0.9em; color: darkgoldenrod">TODAY'S WITHDRAWALS </div>
+              <div class="h6 mb-0 fw-bold" v-if="loading">
                 <span class="spinner-border spinner-border-sm"></span> loading...
-              </div> -->
-              <div class="h6 mb-0 fw-bold">GH¢ {{ 43.23 }}</div>
+              </div>
+              <div class="h6 mb-0 fw-bold">GH¢ {{ formatNumber(3232) }}</div>
             </div>
             <div class="col-auto">
               <span class="" style="font-size: 250%">&#128179;</span>

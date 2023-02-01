@@ -2,7 +2,7 @@
 import {onMounted, reactive, ref} from "vue";
 import Button from "primevue/button";
 import axios from "../../axios.js";
-import {useHomeStore} from "../../store/home.js";
+import { useHomeStore } from "@/store/home";
 
 const store = useHomeStore();
 const loading = ref(false);

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import {useHomeStore} from "../store/home.js";
+import {useHomeStore} from "@/store/home";
 
 import Home from '../views/Home.vue';
 import Dashboard from '../views/Dashboard.vue';
@@ -7,6 +7,7 @@ import clientUserRouter from  "./users/clients/index";
 import  userRouter from "./users/index.js";
 import imagesRouter from "./images/index.js";
 import drawRouter from "./draw/index.js";
+import transactionsRouter from "@/router/transactions";
 
 
 const routes = [
@@ -28,6 +29,7 @@ const routes = [
     ...clientUserRouter,
     ...imagesRouter,
     ...drawRouter,
+    ...transactionsRouter,
 
 //    redirect to home page if route not found
     {
@@ -51,16 +53,16 @@ const router = createRouter({
 })
 
 
-// router.beforeEach((to, from) => {
-//     const store = useHomeStore();
-//     if (to.meta.requiresAuth && !store.token) {
-//         return {
-//             name: 'login',
-//             // save the location we were at to come back later
-//             query: { redirect: to.fullPath },
-//         }
-//     }
-// })
+router.beforeEach((to, from) => {
+    const store = useHomeStore();
+    if (to.meta.requiresAuth && !store.token) {
+        return {
+            name: 'login',
+            // save the location we were at to come back later
+            query: { redirect: to.fullPath },
+        }
+    }
+})
 
 
 export default router;

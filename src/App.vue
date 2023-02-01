@@ -1,9 +1,35 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Toast from "primevue/toast";
+import Avatar from "primevue/avatar";
+import  { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
+import { useHomeStore } from "@/store/home";
+import axios from "@/axios";
 window.toast = useToast();
+const store = useHomeStore();
+const router = useRouter();
 
+const smsLoading = ref(false);
+const smsBalance = ref(null);
+const profileSidebar = ref(false);
+
+const getSmsBalance = async () => {
+  try {
+    smsLoading.value = true;
+    const response = await axios.get('/admin/sms-balance',
+        // {
+        //   headers: { 'Authorization': `Bearer ${store.token}`}
+        // }
+    )
+    if (response.status === 200 ){
+      smsBalance.value = response.data;
+    }
+
+  }catch (e) {
+    console.clear();
+  }finally { smsLoading.value = false; }
+}
 
 onMounted(() => {
   const sidebarToggler = document.querySelector("#menu-toggle");
@@ -12,7 +38,18 @@ onMounted(() => {
     e.preventDefault();
     wrapper.classList.toggle("toggled");
   }
+
+  getSmsBalance();
 })
+
+//Logout
+const logout = () => {
+  profileSidebar.value = false;
+  store.clearToken();
+  store.clearUser();
+  router.push({name: 'login'});
+  toast.add({severity:'success', summary: 'Success', detail: 'You are logged out', life: 4000});
+}
 </script>
 
 <template>
@@ -20,45 +57,77 @@ onMounted(() => {
 
 <!-- Sidebar -->
 <div id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-        <li class="sidebar-brand">
-          <router-link :to="{name: 'dashboard'}"><span class="pi pi-home"></span> Dashboard</router-link>
-        </li>
+    <div class="sidebar-nav">
+        <section class="sidebar-brand">
+          <router-link :to="{name: 'dashboard'}"><span>&#127962;</span> Dashboard</router-link>
+        </section>
         
-        <li>
-          <router-link :to="{name: 'home'}"><span class="pi pi-home"></span> Home</router-link>
-        </li>
-         <li>
-            <router-link :to="{name: 'client-users'}"><span class="pi pi-users"></span> Users</router-link>
-        </li>
-        <li>
+        <section>
+          <router-link :to="{name: 'home'}"><span>&#127968;</span> Home</router-link>
+        </section>
+         <section>
+            <router-link :to="{name: 'client-users'}"><span>&#128101;</span> Users</router-link>
+        </section>
+        <section>
          <div class="dropdown">
           <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-<!--            <span class="pi pi-images"></span>-->
-            <span class="pi pi-home"></span>
+            <span>&#128248;</span>
             Images
           </a>
           <ul class="dropdown-menu dropdown-menu-dark w-100">
-            <li><router-link :to="{name: 'images'}">View Images</router-link></li>
-            <li><router-link :to="{name: 'upload-images'}">Upload Image</router-link></li>
+            <li><router-link :to="{name: 'images'}">
+              <span class="pi pi-eye"></span>&nbsp; View Images</router-link></li>
+
+            <li><router-link :to="{name: 'upload-images'}">
+              <span class="pi pi-upload"></span>&nbsp; Upload Image </router-link></li>
           </ul>
         </div>
-      </li>
-      <li>
+      </section>
+      <section>
         <div class="dropdown">
           <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <!--            <span class="pi pi-images"></span>-->
-            <span class="pi pi-home"></span>
+            <span>&#9989;</span>
             Draw
           </a>
           <ul class="dropdown-menu dropdown-menu-dark w-100">
-            <li><router-link :to="{name: 'draw-numbers'}">Enter Draw Numbers</router-link></li>
-            <li><router-link :to="{name: 'draw'}">Perform Draw</router-link></li>
+            <li><router-link :to="{name: 'draw-numbers'}">
+              <span class="pi pi-copy"></span>&nbsp; Enter Draw Numbers</router-link></li>
+
+            <li><router-link :to="{name: 'draw'}">
+              <span class="pi pi-calculator"></span>&nbsp; Perform Draw</router-link></li>
           </ul>
         </div>
-      </li>
-    </ul>
+      </section>
 
+      <section>
+        <div class="dropdown">
+          <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <span>&#128176;</span>
+            Transactions
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark w-100">
+            <li><router-link :to="{name: 'transactions'}">
+              <span class="pi pi-copy"></span>&nbsp; View Transactions</router-link></li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="text-center dropdown mt-4">
+        <span class="text-white" data-bs-toggle="dropdown" aria-expanded="false">
+          <Avatar icon="pi pi-user" style="background-color:#2196F3; color: #ffffff; cursor: pointer;"
+                  v-if="store.token" shape="circle" @click="profileSidebar = true;"
+           />
+          <span class="dropdown-toggle">&nbsp; {{ 'Innocent' }}</span>
+        </span>
+        <ul class="dropdown-menu w-100">
+          <li><router-link :to="{name: 'profile'}" class="dropdown-item fw-bold" style="cursor: pointer;"><span>&#128581;</span>Profile</router-link></li>
+          <li class="dropdown-divider"></li>
+          <li><a class="dropdown-item fw-bold" @click="logout" style="cursor: pointer;"><span>&#9940;</span> Logout</a></li>
+        </ul>
+
+
+      </div>
+    </div>
 </div>
 <!-- /#sidebar-wrapper -->
 
@@ -70,9 +139,14 @@ onMounted(() => {
     </a>
     <div class="justify-content-center mx-auto">
       <div class="navbar-nav">
-        <a class="nav-link fw-bold">sms: 4534</a>
+        <a class="nav-link fw-bold">
+          sms: {{ smsBalance }}
+          <span class="pi pi-sync" style="cursor: pointer;" title="Refresh" @click="getSmsBalance" v-if="!smsLoading"></span>
+          <span class="spinner-border spinner-border-sm" v-if="smsLoading"></span>
+        </a>
       </div>
     </div>
+
   </div>
 </nav>
 
@@ -101,7 +175,8 @@ body {
   cursor: pointer;
 }
  .router-link-exact-active {
-  color: #fff !important;
+  color: #9af803 !important;
+   font-weight: bold;
   background: none !important;
  }
 
@@ -160,25 +235,27 @@ body {
     list-style: none;
 }
 
-.sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
+.sidebar-nav section {
+    text-indent: 10px;
+    line-height: 50px;
 }
 
-.sidebar-nav li a {
+.sidebar-nav section a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: #fff3cd;
+    font-weight: bold;
+  letter-spacing: 0.8px;
 }
 
-.sidebar-nav li a:hover {
+.sidebar-nav section a:hover {
     text-decoration: none;
-    color: #fff;
+    color: #f5d2ae;
     background: rgba(255,255,255,0.2);
 }
 
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
+.sidebar-nav section a:active,
+.sidebar-nav section a:focus {
     text-decoration: none;
 }
 

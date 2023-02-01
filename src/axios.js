@@ -3,8 +3,8 @@ import axios from "axios";
 import {useHomeStore} from "./store/home.js";
 
 // axios.defaults.baseURL = "http://localhost:3000";
-// axios.defaults.baseURL = "http://192.168.1.102:3000";
-axios.defaults.baseURL = "https://test.christrevivalch.org";
+axios.defaults.baseURL = "http://192.168.1.101:3000";
+// axios.defaults.baseURL = "https://test.christrevivalch.org";
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
 axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
 axios.defaults.headers.delete['Content-Type'] = 'application/json; charset=utf-8';
@@ -22,7 +22,7 @@ axios.interceptors.response.use(function (response) {
     if (e.response && e.response.status === 401){
         store.clearToken();
         store.clearUser();
-        router.push({name: "register-login"})
+        router.push({name: "login"})
     }
 
     return Promise.reject(e);

@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from "vue";
 import axios from "../../../axios.js";
-import { formatNumber } from "../../../functions/index.js";
+import { formatNumber } from "@/functions";
 import DataTable from 'primevue/datatable';
 import Button from "primevue/button";
 import Column from 'primevue/column';
-import { useHomeStore } from "../../../store/home.js";
+import { useHomeStore } from "@/store/home";
 const store = useHomeStore();
 
 const loading = ref(null);
@@ -66,7 +66,7 @@ const searchUser = async () => {
     const response = await  axios.post('/admin/clientUsers/search',
         JSON.stringify({phone: searchTerm.value}),
         {
-          // headers: { 'Authorization': `Bearer ${store.token}`}
+          headers: { 'Authorization': `Bearer ${store.token}`}
         }
     )
 

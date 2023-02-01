@@ -1,9 +1,9 @@
 <script setup>
 import PickList from 'primevue/picklist';
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import Button from "primevue/button";
 import axios from "../../axios.js";
-import {useHomeStore} from "../../store/home.js";
+import { useHomeStore } from "@/store/home";
 
 const store = useHomeStore();
 
@@ -11,13 +11,15 @@ const deleteDialog = ref(null);
 const viewImageDialog = ref(null);
 const selectedImage = ref(null);
 const loadingInProgress = ref(false);
-const loading = ref(false);
 const images = ref(null);
 const imagePath = ref('');
+const loadingDialog = ref(null);
+
 
 //Get images
 const getImages = async () => {
   try {
+    loadingDialog.value.showModal();
     const response = await  axios.get('/admin/uploads',
         {
           headers: { 'Authorization': `Bearer ${store.token}`}
@@ -40,9 +42,14 @@ const getImages = async () => {
 
     return toast.add({severity:'warn', summary: 'Error',
       detail: 'Sorry, something went wrong. Please try again later', life: 4000})
-  }finally {  }
+  }finally {  loadingDialog.value.close(); }
 }
-getImages();
+
+
+onMounted(() => {
+  getImages();
+})
+
 
 //Arrange Images
 const arrange = async () => {
@@ -88,7 +95,7 @@ const confirmDelete = (image) => {
 const deleteImage = async () => {
   try {
     deleteDialog.value.close();
-    loading.value = true;
+    loadingDialog.value.showModal();
     const response = await  axios.post('/admin/uploads/delete',
         {image: selectedImage.value},
         {
@@ -112,7 +119,7 @@ const deleteImage = async () => {
 
     return toast.add({severity:'warn', summary: 'Error',
       detail: 'Sorry, something went wrong. Please try again later', life: 4000})
-  }finally {  loading.value = false; }
+  }finally {   loadingDialog.value.close(); }
 }
 
 //View Image
@@ -178,12 +185,16 @@ const viewImage = async (image) => {
     <div class="text-center">
       <button class="btn btn-danger btn-sm fw-bold" @click="viewImageDialog.close()">X</button>
     </div>
-
     <div class="text-center p-1">
       <img :src="selectedImage ? imagePath + selectedImage.name : ''"
            class="img-fluid w-100" alt="image" style="width: 300px !important; max-height: 100px !important;">
     </div>
+  </dialog>
 
+
+<!-- Loading Dialog -->
+  <dialog ref="loadingDialog" class="bg-transparent" style="border: none;">
+    <h4 class=""><span class="spinner-border"></span></h4>
   </dialog>
 </div>
 </template>
