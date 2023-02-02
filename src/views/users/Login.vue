@@ -117,7 +117,7 @@ const login = async () => {
 
                       <section class="text-center">
                         <Button label="Login" type="submit" :loading="loading" loadingIcon="spinner-border spinner-border-sm"
-                                class="p-button  p-button-rounded mt-2"/>
+                                class="p-button  p-button-rounded mt-2 px-4 py-2"/>
 
                       </section>
 

@@ -117,7 +117,7 @@ const logout = () => {
           <Avatar icon="pi pi-user" style="background-color:#2196F3; color: #ffffff; cursor: pointer;"
                   v-if="store.token" shape="circle" @click="profileSidebar = true;"
            />
-          <span class="dropdown-toggle">&nbsp; {{ 'Innocent' }}</span>
+          <span class="dropdown-toggle">&nbsp; {{ store.user.displayName || '' }}</span>
         </span>
         <ul class="dropdown-menu w-100">
           <li><router-link :to="{name: 'change-password'}" class="dropdown-item fw-bold" style="cursor: pointer;"><span>&#128274;</span>Reset Password</router-link></li>
