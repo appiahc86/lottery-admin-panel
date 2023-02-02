@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import axios from "../../axios.js";
-import { useHomeStore } from "../../store/home.js";
+import { useHomeStore } from "@/store/home";
 const store = useHomeStore();
 
 const page = ref(1);
@@ -13,7 +13,8 @@ const totalRecords = ref(0);
 const loading = ref(false);
 
 const drawNumbers = ref([]);
-const confirmDialog = ref();
+const confirmDrawDialog = ref();
+const confirmDeleteDialog = ref();
 const selectedDraw = ref(null);
 
 //..............Load draw numbers ..................
@@ -59,12 +60,12 @@ const onPage = (event) => {
 //Confirm Draw
 const confirmDraw = (draw) => {
   selectedDraw.value = draw;
-  confirmDialog.value.showModal();
+  confirmDrawDialog.value.showModal();
 }
 
 //Perform Draw
 const performDraw = async () => {
-  confirmDialog.value.close();
+  confirmDrawDialog.value.close();
   try {
     loading.value = true;
     const response = await  axios.post('/admin/draw/perform',
@@ -81,6 +82,43 @@ const performDraw = async () => {
         }
       })
       return toast.add({severity:'success', summary: 'Success', detail: "Draw was successful", life: 4000});
+    }
+  }catch (e) {
+    if (e.response) return toast.add({severity:'warn', summary: 'Error', detail: e.response.data, life: 4000});
+
+    if (e.request && e.request.status === 0) {
+      return toast.add({severity:'warn', summary: 'Error', detail: 'Sorry, Connection to Server refused. Please check your internet connection or try again later', life: 4000});
+    }
+    return toast.add({severity:'warn', summary: 'Error', detail: 'Sorry, something went wrong. Please try again later', life: 4000});
+
+  }finally { loading.value = false; }
+
+}
+
+
+//confirm delete
+const confirmDelete = (draw) => {
+  selectedDraw.value = draw;
+  confirmDeleteDialog.value.showModal();
+}
+
+//Delete draw
+const deleteDraw = async () => {
+  confirmDeleteDialog.value.close();
+  try {
+    loading.value = true;
+    const response = await  axios.post('/admin/draw/delete',
+        {id: selectedDraw.value.id},
+        {
+          headers: { 'Authorization': `Bearer ${store.token}`}
+        }
+    )
+
+    if (response.status === 200){
+      drawNumbers.value = drawNumbers.value.filter(draw => {
+        return draw.id.toString() !== selectedDraw.value.id.toString();
+      })
+      return toast.add({severity:'success', summary: 'Success', detail: "Record Deleted successfully", life: 4000});
     }
   }catch (e) {
     if (e.response) return toast.add({severity:'warn', summary: 'Error', detail: e.response.data, life: 4000});
@@ -140,23 +178,39 @@ const performDraw = async () => {
             <Column field="" header="Draw" :sortable="false" class="data-table-font-size">
               <template #body="{data}">
                 <td v-if="!data.closed">
-                  <span class="btn btn-primary btn-sm pi pi-check" @click="confirmDraw(data)"></span>
+                  <span @click="confirmDraw(data)" style="cursor: pointer; font-size: 1.2em;">&#9989;</span>
                 </td>
                 <td v-else>
 
                 </td>
               </template>
             </Column>
+            <Column field="" header="" :sortable="false" class="data-table-font-size">
+              <template #body="{data}">
+                <td v-if="!data.closed">
+                  <span class="pi pi-trash text-danger" style="cursor: pointer;" @click="confirmDelete(data)"></span>
+                </td>
+              </template>
+            </Column>
           </DataTable>
         </div>
 
-        <!--      Confirm dialog    -->
-        <dialog ref="confirmDialog" style="border: none;" class="p-5">
+        <!--      Confirm draw dialog    -->
+        <dialog ref="confirmDrawDialog" style="border: none;" class="p-5">
           <p>This will perform the draw operation which cannot be reversed.</p>
           <h6 class="text-center my3">Are you sure you want to continue?</h6>
           <div class="text-center">
-            <button class="btn btn-secondary btn-sm mx-3" @click="confirmDialog.close()">Cancel</button>
+            <button class="btn btn-secondary btn-sm mx-3" @click="confirmDrawDialog.close()">Cancel</button>
             <button class="btn btn-danger btn-sm" @click="performDraw">Proceed</button>
+          </div>
+        </dialog>
+
+        <!--      Confirm delete dialog    -->
+        <dialog ref="confirmDeleteDialog" style="border: none;" class="p-5">
+          <h6 class="text-center my3">Are you sure you want to delete this record?</h6>
+          <div class="text-center">
+            <button class="btn btn-secondary btn-sm mx-3" @click="confirmDeleteDialog.close()">Cancel</button>
+            <button class="btn btn-danger btn-sm" @click="deleteDraw">Proceed</button>
           </div>
         </dialog>
 

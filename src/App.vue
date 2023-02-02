@@ -120,7 +120,7 @@ const logout = () => {
           <span class="dropdown-toggle">&nbsp; {{ 'Innocent' }}</span>
         </span>
         <ul class="dropdown-menu w-100">
-          <li><router-link :to="{name: 'profile'}" class="dropdown-item fw-bold" style="cursor: pointer;"><span>&#128581;</span>Profile</router-link></li>
+          <li><router-link :to="{name: 'change-password'}" class="dropdown-item fw-bold" style="cursor: pointer;"><span>&#128274;</span>Reset Password</router-link></li>
           <li class="dropdown-divider"></li>
           <li><a class="dropdown-item fw-bold" @click="logout" style="cursor: pointer;"><span>&#9940;</span> Logout</a></li>
         </ul>

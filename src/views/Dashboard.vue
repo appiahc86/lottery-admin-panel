@@ -8,6 +8,10 @@ import {formatNumber} from "@/functions";
 const store  = useHomeStore();
 
 const userCount = ref(0);
+const deposits = ref(0);
+const withdrawals = ref(0);
+const annualWinnings = ref(0);
+
 //Get data
 const getData = async () => {
   try {
@@ -20,6 +24,9 @@ const getData = async () => {
 
     if (response.status === 200){
       userCount.value = response.data.userCount;
+      deposits.value = response.data.deposits;
+      withdrawals.value = response.data.withdrawals;
+      annualWinnings.value = response.data.annualWinnings;
     }
 
   }catch (e) {
@@ -56,12 +63,12 @@ getData();
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs fw-bold text-primary mb-1" style="font-size: 0.9em;">USERS COUNT</div>
-              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
-                <span class="spinner-border spinner-border-sm"></span> loading...</div> -->
+               <div class="h6 mb-0 fw-bold" v-if="loading">
+                <span class="spinner-border spinner-border-sm"></span> loading...</div>
               <div class="h6 mb-0 fw-bold">&nbsp; {{ formatNumber(userCount) }}</div>
             </div>
             <div class="col-auto">
-              <span class="text-black-50" style="font-size: 250%">&#128290;</span>
+              <span class="text-black-50" style="font-size: 250%">&#128101;</span>
             </div>
           </div>
         </div>
@@ -73,11 +80,11 @@ getData();
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs fw-bold mb-1" style="font-size: 0.9em; color: darkgoldenrod">TODAY'S WITHDRAWALS </div>
+              <div class="text-xs fw-bold mb-1" style="font-size: 0.9em; color: darkgoldenrod">ANNUAL WINNINGS</div>
               <div class="h6 mb-0 fw-bold" v-if="loading">
                 <span class="spinner-border spinner-border-sm"></span> loading...
               </div>
-              <div class="h6 mb-0 fw-bold">GH¢ {{ formatNumber(3232) }}</div>
+              <div class="h6 mb-0 fw-bold">GH¢ {{ formatNumber(annualWinnings) }}</div>
             </div>
             <div class="col-auto">
               <span class="" style="font-size: 250%">&#128179;</span>
@@ -93,10 +100,10 @@ getData();
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs fw-bold text-danger mb-1" style="font-size: 0.9em;">OUTSTANDING BILLS</div>
-              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
-                <span class="spinner-border spinner-border-sm"></span> loading...</div> -->
-              <div class="h6 mb-0 fw-bold">GH¢ {{ 6556.54 }}</div>
+              <div class="text-xs fw-bold text-danger mb-1" style="font-size: 0.9em;">TODAY'S WITHDRAWALS</div>
+               <div class="h6 mb-0 fw-bold" v-if="loading">
+                <span class="spinner-border spinner-border-sm"></span> loading...</div>
+              <div class="h6 mb-0 fw-bold">GH¢ {{ formatNumber(withdrawals) }}</div>
             </div>
             <div class="col-auto">
               <span style="font-size: 250%">&#128176;</span>
@@ -112,10 +119,10 @@ getData();
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs fw-bold text-success mb-1" style="font-size: 0.9em;">ANNUAL SALES</div>
-              <!-- <div class="h6 mb-0 fw-bold" v-if="loading">
-                <span class="spinner-border spinner-border-sm"></span> loading...</div> -->
-              <div class="h6 mb-0 fw-bold">GH¢ {{ 756 }}</div>
+              <div class="text-xs fw-bold text-success mb-1" style="font-size: 0.9em;">TODAY'S DEPOSITS</div>
+              <div class="h6 mb-0 fw-bold" v-if="loading">
+                <span class="spinner-border spinner-border-sm"></span> loading...</div>
+              <div class="h6 mb-0 fw-bold">GH¢ {{ formatNumber(deposits) }}</div>
             </div>
             <div class="col-auto">
                 <span style="font-size: 250%">
