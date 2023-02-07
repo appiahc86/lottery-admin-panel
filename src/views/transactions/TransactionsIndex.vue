@@ -81,20 +81,21 @@ const onPage = (event) => {
               </td>
             </template>
           </Column>
-          <Column field="anount" header="Amount" :sortable="true" class="data-table-font-size">
+          <Column field="createdAt" header="Date" :sortable="true" class="data-table-font-size">
+            <template #body="{data}">
+              <td>
+                {{ new Date(data.createdAt).toLocaleDateString() }} {{ new Date(data.createdAt).toLocaleTimeString() }}
+              </td>
+            </template>
+          </Column>
+          <Column field="amount" header="Amount" :sortable="true" class="data-table-font-size">
             <template #body="{data}">
               <td>
                 {{ formatNumber(data.amount) }}
               </td>
             </template>
           </Column>
-          <Column field="createdAt" header="Date" :sortable="true" class="data-table-font-size">
-            <template #body="{data}">
-              <td>
-                {{ new Date(data.createdAt).toLocaleDateString() }}
-              </td>
-            </template>
-          </Column>
+          <Column field="referenceNumber" header="Reference No." :sortable="true" class="data-table-font-size"></Column>
           <Column field="transactionType" header="Type" :sortable="true" class="data-table-font-size">
             <template #body="{data}">
               <td>
@@ -104,8 +105,12 @@ const onPage = (event) => {
           </Column>
           <Column field="status" header="Status" :sortable="true" class="data-table-font-size">
             <template #body="{data}">
-              <td>
-                {{ data.status }}
+              <td class="text-capitalize">
+              <td class="text-capitalize">
+                <span class="badge bg-secondary" style="font-size: 0.9em" v-if="data.status === 'pending'">{{ data.status }}</span>
+                <span class="badge bg-success" style="font-size: 0.9em" v-if="data.status === 'successful'">{{ data.status }}</span>
+                <span class="badge bg-danger" style="font-size: 0.9em" v-if="data.status === 'failed'">{{ data.status }}</span>
+              </td>
               </td>
             </template>
           </Column>

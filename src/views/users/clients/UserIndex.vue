@@ -123,15 +123,21 @@ const onPage = (event) => {
             <h6 class="text-white fw-bold">Loading data Please wait. <span class="spinner-border spinner-border-sm"></span></h6>
 
           </template>
-          <Column field="phone" header="Phone" :sortable="true" class="data-table-font-size">
+          <Column field="phone" header="Phone" sortable class="data-table-font-size">
             <template #body="{data}">
               <td>
                 {{ '0' + data.phone}}
               </td>
             </template>
           </Column>
-          <Column field="firstName" header="First Name" :sortable="true" class="data-table-font-size"></Column>
-          <Column field="isActive" header="Active" :sortable="true" class="data-table-font-size">
+          <Column field="balance" header="Balance" sortable class="data-table-font-size">
+            <template #body="{data}">
+              <td>
+                {{ formatNumber(data.balance) }}
+              </td>
+            </template>
+          </Column>
+          <Column field="isActive" header="Active" sortable class="data-table-font-size">
             <template #body="{data}">
               <td>
                 {{ data.isActive ? 'Yes' : 'No' }}
@@ -153,14 +159,6 @@ const onPage = (event) => {
             <tr>
               <th>Network</th>
               <td>{{ searchedUser.network }}</td>
-            </tr>
-            <tr>
-              <th>First Name</th>
-              <td>{{ searchedUser.firstName }}</td>
-            </tr>
-            <tr>
-              <th>Last Name</th>
-              <td>{{ searchedUser.lastName }}</td>
             </tr>
             <tr>
               <th>Acc. Balance</th>
