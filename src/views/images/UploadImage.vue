@@ -55,11 +55,7 @@ const errorHandler = async (event) => {
 <template>
 
   <h5 class="mt-3">Upload Images</h5>
-
-<!--    <FileUpload name="images[]" url="http://192.168.1.101:3000/admin/uploads" @upload="upload($event)"-->
-<!--                @error="errorHandler($event)" :multiple="true" accept="image/*" :maxFileSize="200000"-->
-<!--                @before-upload="beforeUpload($event)" :showUploadButton="showUploadBtn">-->
-      <FileUpload name="images[]" url="https://test.christrevivalch.org/admin/uploads" @upload="upload($event)"
+      <FileUpload name="images[]" :url="axios.defaults.baseURL + '/admin/uploads'" @upload="upload($event)"
                 @error="errorHandler($event)" :multiple="true" accept="image/*" :maxFileSize="200000"
                 @before-upload="beforeUpload($event)" :showUploadButton="showUploadBtn">
     <template #content>

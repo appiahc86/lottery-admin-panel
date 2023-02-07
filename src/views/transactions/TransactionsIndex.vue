@@ -62,7 +62,7 @@ const onPage = (event) => {
   <div class="row">
     <div class="col">
 
-      <div class="table-responsive mt-2">
+      <div class="table-responsive mt-2 mb-4">
         <!--        Table -->
         <DataTable :value="transactions" :lazy="true" :paginator="true" :rows="pageSize" dataKey="id"
                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
