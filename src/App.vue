@@ -1,4 +1,5 @@
 <script setup>
+import { io }  from "socket.io-client";
 import { ref, onMounted } from 'vue';
 import Toast from "primevue/toast";
 import Avatar from "primevue/avatar";
@@ -10,18 +11,22 @@ window.toast = useToast();
 const store = useHomeStore();
 const router = useRouter();
 
+const usersOnline = ref(0);
 const smsLoading = ref(false);
 const smsBalance = ref(null);
 const profileSidebar = ref(false);
 
+const socket = io(`${axios.defaults.baseURL}`);
+socket.emit('join-admin-users', 'admin');
+
+socket.on("onlineUsers", (users) => {
+  usersOnline.value = users
+})
+
 const getSmsBalance = async () => {
   try {
     smsLoading.value = true;
-    const response = await axios.get('/admin/sms-balance',
-        // {
-        //   headers: { 'Authorization': `Bearer ${store.token}`}
-        // }
-    )
+    const response = await axios.get('/admin/sms-balance')
     if (response.status === 200 ){
       smsBalance.value = response.data;
     }
@@ -112,6 +117,16 @@ const logout = () => {
         </div>
       </section>
 
+      <!--   SMS   -->
+      <div class=" text-white ms-3 mt-4">
+        <h6>
+          <span class="pi pi-envelope">&nbsp;</span>
+          sms: {{ smsBalance }}
+          <span class="pi pi-sync" style="cursor: pointer;" title="Refresh" @click="getSmsBalance" v-if="!smsLoading"></span>
+          <span class="spinner-border spinner-border-sm" v-if="smsLoading"></span>
+        </h6>
+      </div>
+
       <div class="text-center dropdown mt-4">
         <span class="text-white" data-bs-toggle="dropdown" aria-expanded="false">
           <Avatar icon="pi pi-user" style="background-color:#2196F3; color: #ffffff; cursor: pointer;"
@@ -124,9 +139,9 @@ const logout = () => {
           <li class="dropdown-divider"></li>
           <li><a class="dropdown-item fw-bold" @click="logout" style="cursor: pointer;"><span>&#9940;</span> Logout</a></li>
         </ul>
-
-
       </div>
+
+
     </div>
 </div>
 <!-- /#sidebar-wrapper -->
@@ -137,12 +152,22 @@ const logout = () => {
     <a class="navbar-brand py-0" style="cursor: pointer;" id="menu-toggle">
       <h3 class="pi pi-bars"></h3>
     </a>
+    <!--    SMS -->
+<!--    <div class="justify-content-center mx-auto">-->
+<!--      <div class="navbar-nav">-->
+<!--        <a class="nav-link fw-bold">-->
+<!--          sms: {{ smsBalance }}-->
+<!--          <span class="pi pi-sync" style="cursor: pointer;" title="Refresh" @click="getSmsBalance" v-if="!smsLoading"></span>-->
+<!--          <span class="spinner-border spinner-border-sm" v-if="smsLoading"></span>-->
+<!--        </a>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <!--   Online users   -->
     <div class="justify-content-center mx-auto">
       <div class="navbar-nav">
         <a class="nav-link fw-bold">
-          sms: {{ smsBalance }}
-          <span class="pi pi-sync" style="cursor: pointer;" title="Refresh" @click="getSmsBalance" v-if="!smsLoading"></span>
-          <span class="spinner-border spinner-border-sm" v-if="smsLoading"></span>
+          Users Online: {{ usersOnline }}
         </a>
       </div>
     </div>
