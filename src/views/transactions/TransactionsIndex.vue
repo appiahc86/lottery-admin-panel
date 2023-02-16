@@ -72,7 +72,6 @@ const onPage = (event) => {
                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
           <template #loading>
             <h6 class="text-white fw-bold">Loading data Please wait. <span class="spinner-border spinner-border-sm"></span></h6>
-
           </template>
           <Column field="phone" header="Phone" :sortable="true" class="data-table-font-size">
             <template #body="{data}">
@@ -106,11 +105,9 @@ const onPage = (event) => {
           <Column field="status" header="Status" :sortable="true" class="data-table-font-size">
             <template #body="{data}">
               <td class="text-capitalize">
-              <td class="text-capitalize">
                 <span class="badge bg-secondary" style="font-size: 0.9em" v-if="data.status === 'pending'">{{ data.status }}</span>
                 <span class="badge bg-success" style="font-size: 0.9em" v-if="data.status === 'successful'">{{ data.status }}</span>
                 <span class="badge bg-danger" style="font-size: 0.9em" v-if="data.status === 'failed'">{{ data.status }}</span>
-              </td>
               </td>
             </template>
           </Column>

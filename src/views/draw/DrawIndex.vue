@@ -5,6 +5,7 @@ import Column from 'primevue/column';
 import axios from "../../axios.js";
 import { useHomeStore } from "@/store/home";
 const store = useHomeStore();
+import moment from "moment";
 
 const page = ref(1);
 const pageSize = ref(10);
@@ -157,14 +158,21 @@ const deleteDraw = async () => {
             <Column field="drawDate" header="Date" :sortable="false" class="data-table-font-size">
               <template #body="{data}">
                 <td>
-                  {{ new Date(data.drawDate).toLocaleDateString() }}
+                  {{ moment(data.drawDate).format("YYYY-MM-DD") }}
                 </td>
               </template>
             </Column>
             <Column field="numbers" header="Draw Numbers" :sortable="false" class="data-table-font-size">
               <template #body="{data}">
-                <td>
+                <td class="text-success">
                   {{ JSON.parse(data.numbers).toString() }}
+                </td>
+              </template>
+            </Column>
+            <Column field="machineNumbers" header="Machine Numbers" :sortable="false" class="data-table-font-size">
+              <template #body="{data}">
+                <td>
+                  {{ JSON.parse(data.machineNumbers).toString() }}
                 </td>
               </template>
             </Column>

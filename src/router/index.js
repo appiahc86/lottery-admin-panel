@@ -8,6 +8,8 @@ import  userRouter from "./users/index.js";
 import imagesRouter from "./images/index.js";
 import drawRouter from "./draw/index.js";
 import transactionsRouter from "@/router/transactions";
+import settingsRouter from "@/router/settings";
+import ticketsRouter from "@/router/tickets";
 
 
 const routes = [
@@ -30,6 +32,8 @@ const routes = [
     ...imagesRouter,
     ...drawRouter,
     ...transactionsRouter,
+    ...settingsRouter,
+    ...ticketsRouter,
 
 //    redirect to home page if route not found
     {

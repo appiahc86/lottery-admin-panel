@@ -17,6 +17,7 @@ const smsBalance = ref(null);
 const profileSidebar = ref(false);
 
 const socket = io(`${axios.defaults.baseURL}`);
+window.socket = socket;
 socket.emit('join-admin-users', 'admin');
 
 socket.on("onlineUsers", (users) => {
@@ -73,6 +74,9 @@ const logout = () => {
          <section>
             <router-link :to="{name: 'client-users'}"><span>&#128101;</span> Users</router-link>
         </section>
+      <section>
+        <router-link :to="{name: 'current-tickets'}"><span>&#11088;</span> Today's Ticikets</router-link>
+      </section>
         <section>
          <div class="dropdown">
           <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -112,9 +116,17 @@ const logout = () => {
           </a>
           <ul class="dropdown-menu dropdown-menu-dark w-100">
             <li><router-link :to="{name: 'transactions'}">
-              <span class="pi pi-copy"></span>&nbsp; View Transactions</router-link></li>
+              <span class="pi pi-copy"></span>&nbsp; View All</router-link></li>
+            <li><router-link :to="{name: 'single-transaction'}">
+              <span class="pi pi-search"></span>&nbsp;Search Transaction</router-link></li>
           </ul>
         </div>
+      </section>
+
+
+      <!--   Settings   -->
+      <section>
+        <router-link :to="{name: 'settings'}"><span>&#128101;</span> Settings</router-link>
       </section>
 
       <!--   SMS   -->
@@ -126,6 +138,7 @@ const logout = () => {
           <span class="spinner-border spinner-border-sm" v-if="smsLoading"></span>
         </h6>
       </div>
+
 
       <div class="text-center dropdown mt-4">
         <span class="text-white" data-bs-toggle="dropdown" aria-expanded="false">
@@ -141,7 +154,6 @@ const logout = () => {
         </ul>
       </div>
 
-
     </div>
 </div>
 <!-- /#sidebar-wrapper -->
@@ -152,16 +164,6 @@ const logout = () => {
     <a class="navbar-brand py-0" style="cursor: pointer;" id="menu-toggle">
       <h3 class="pi pi-bars"></h3>
     </a>
-    <!--    SMS -->
-<!--    <div class="justify-content-center mx-auto">-->
-<!--      <div class="navbar-nav">-->
-<!--        <a class="nav-link fw-bold">-->
-<!--          sms: {{ smsBalance }}-->
-<!--          <span class="pi pi-sync" style="cursor: pointer;" title="Refresh" @click="getSmsBalance" v-if="!smsLoading"></span>-->
-<!--          <span class="spinner-border spinner-border-sm" v-if="smsLoading"></span>-->
-<!--        </a>-->
-<!--      </div>-->
-<!--    </div>-->
 
     <!--   Online users   -->
     <div class="justify-content-center mx-auto">

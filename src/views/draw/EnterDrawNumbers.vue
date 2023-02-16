@@ -8,7 +8,7 @@ const store = useHomeStore();
 const loading = ref(false);
 
 let formData = reactive({
-   drawNumbers: [], date: null
+   numbers: [], date: null
 });
 
 //On mounted Hook
@@ -18,20 +18,20 @@ onMounted(() => {
     number.onclick = function(e){
       if (e.target.classList.contains('active')){
         e.target.classList.remove('active');
-        formData.drawNumbers = formData.drawNumbers.filter(num => num !== parseInt(e.target.innerText));
+        formData.numbers = formData.numbers.filter(num => num !== parseInt(e.target.innerText));
       }
-      else if (formData.drawNumbers.length < 5 && !e.target.classList.contains('active')){
+      else if (formData.numbers.length < 10 && !e.target.classList.contains('active')){
         e.target.classList.add('active');
-        return formData.drawNumbers.push(parseInt(e.target.innerText));
+        return formData.numbers.push(parseInt(e.target.innerText));
       }
-      else if (formData.drawNumbers.length > 4 && !e.target.classList.contains('active'))
-        return  toast.add({severity:'warn', summary: 'Sorry!', detail:'You cannot select more than 5 numbers', life: 4000});
+      else if (formData.numbers.length > 9 && !e.target.classList.contains('active'))
+        return  toast.add({severity:'warn', summary: 'Sorry!', detail:'You cannot select more than 10 numbers', life: 4000});
     }
   }
 })
 
 //Save draw numbers
-const saveDrawNumbers = async () => {
+const saveData = async () => {
   const numbers = document.querySelectorAll(".numbers-ball");
   try {
 
@@ -48,7 +48,7 @@ const saveDrawNumbers = async () => {
     }
 
     formData.date = null;
-    formData.drawNumbers = [];
+    formData.numbers = [];
     for (const number of numbers) {
       if (number.classList.contains('active')) {
         number.classList.remove('active');
@@ -87,15 +87,27 @@ const saveDrawNumbers = async () => {
       <!-- ............. Numbers ............... -->
       <div class="row justify-content-center">
 
-        <form @submit.prevent="saveDrawNumbers">
-          <div class="row text-center" v-if="formData.drawNumbers.length">
+        <form @submit.prevent="saveData">
+          <div class="row text-center" v-if="formData.numbers.length">
 
-            <!--      Selected Numbers-->
-            <div class="col" style="border: 1px solid #ccc">
+            <!--      Draw Numbers-->
+            <div class="col-md-6" style="border: 1px solid #ccc">
               <h6 class="mt-3">Draw Numbers</h6>
-              <template v-for="num in formData.drawNumbers" :key="num">
-                <div class="numbers-ball-selected d-inline-flex">{{ num }}</div>
-              </template>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[0]">{{ formData.numbers[0] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[1]">{{ formData.numbers[1] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[2]">{{ formData.numbers[2] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[3]">{{ formData.numbers[3] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[4]">{{ formData.numbers[4] }}</div>
+            </div>
+
+          <!--     Machine Numbers       -->
+            <div class="col-md-6" style="border: 1px solid #ccc">
+              <h6 class="mt-3">Machine Numbers</h6>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[5]">{{ formData.numbers[5] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[6]">{{ formData.numbers[6] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[7]">{{ formData.numbers[7] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[8]">{{ formData.numbers[8] }}</div>
+                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[9]">{{ formData.numbers[9] }}</div>
             </div>
           </div>
 
@@ -114,7 +126,7 @@ const saveDrawNumbers = async () => {
             <div class="col-sm-6 col-lg-3">
               <Button label="Submit" type="submit" class="p-button-rounded p-button-sm w-100"
                       :loading="loading" loadingIcon="spinner-border spinner-border-sm"
-                      v-if="formData.drawNumbers.length === 5"/>
+                      v-if="formData.numbers.length === 10"/>
           </div>
           </div>
 
