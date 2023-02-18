@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import { ref } from "vue";
 import Button from "primevue/button";
 import axios from "../../axios.js";
 import { useHomeStore } from "@/store/home";
@@ -7,52 +7,52 @@ import { useHomeStore } from "@/store/home";
 const store = useHomeStore();
 const loading = ref(false);
 
-let formData = reactive({
-   numbers: [], date: null
-});
+const drawNumbers = ref([null, null, null, null, null]);
+const machineNumbers = ref([null, null, null, null, null]);
+const date = ref("");
 
-//On mounted Hook
-onMounted(() => {
-  const numbers = document.querySelectorAll(".numbers-ball");
-  for (const number of numbers) {
-    number.onclick = function(e){
-      if (e.target.classList.contains('active')){
-        e.target.classList.remove('active');
-        formData.numbers = formData.numbers.filter(num => num !== parseInt(e.target.innerText));
-      }
-      else if (formData.numbers.length < 10 && !e.target.classList.contains('active')){
-        e.target.classList.add('active');
-        return formData.numbers.push(parseInt(e.target.innerText));
-      }
-      else if (formData.numbers.length > 9 && !e.target.classList.contains('active'))
-        return  toast.add({severity:'warn', summary: 'Sorry!', detail:'You cannot select more than 10 numbers', life: 4000});
-    }
-  }
-})
 
 //Save draw numbers
 const saveData = async () => {
-  const numbers = document.querySelectorAll(".numbers-ball");
-  try {
 
+  try {
     loading.value = true;
+
+    //.......................validation.................................
+
+    //Draw numbers
+    for (const drawNumber of drawNumbers.value) {
+      if (!drawNumber) return toast.add({severity:'warn', detail: 'Draw numbers must be 5', life: 4000});
+      if (drawNumber < 1 || drawNumber > 90) return toast.add({severity:'warn', detail: 'Invalid Numbers', life: 4000});
+    }
+    if (drawNumbers.value.length !== 5) return toast.add({severity:'warn', summary: 'Error',
+      detail: 'Draw numbers should be 5', life: 4000});
+
+    //Machine numbers
+    for (const machineNumber of machineNumbers.value) {
+      if (!machineNumber) return toast.add({severity:'warn', detail: 'Machine numbers must be 5', life: 4000});
+      if (machineNumber < 1 || machineNumber > 90) return toast.add({severity:'warn', detail: 'Invalid Machine Numbers', life: 4000});
+    }
+    if (machineNumbers.value.length !== 5) return toast.add({severity:'warn', summary: 'Error',
+      detail: 'Machine numbers should be 5', life: 4000});
+
+    //Send data to server
     const response = await  axios.post('/admin/draw/numbers',
-        JSON.stringify(formData),
+        JSON.stringify({
+          date: date.value,
+          drawNumbers: drawNumbers.value,
+          machineNumbers: machineNumbers.value
+        }),
         {
           headers: { 'Authorization': `Bearer ${store.token}`}
         }
     )
 
     if (response.status === 200) {
+      drawNumbers.value = [null, null, null, null, null];
+      machineNumbers.value = [null, null, null, null, null];
+      date.value = '';
        toast.add({severity:'success', summary: 'Success', detail: 'Record Saved Successfully', life: 4000});
-    }
-
-    formData.date = null;
-    formData.numbers = [];
-    for (const number of numbers) {
-      if (number.classList.contains('active')) {
-        number.classList.remove('active');
-      }
     }
 
 
@@ -75,97 +75,46 @@ const saveData = async () => {
 
 <template>
 
-  <div class="col p-3" style="background: rgba(231,101,239,0.61);">
-    <div class="numbers-ball-container">
-      <template v-for="num in 90">
-        <div class="numbers-ball">{{ num }}</div>
-      </template>
-    </div>
-  </div>
+  <div class="container my-5">
+    <form @submit.prevent="saveData">
+      <div class="row">
+        <h3 class="text-center">Enter Draw Numbers</h3>
 
-<div class="container-fluid mb-5">
-      <!-- ............. Numbers ............... -->
-      <div class="row justify-content-center">
-
-        <form @submit.prevent="saveData">
-          <div class="row text-center" v-if="formData.numbers.length">
-
-            <!--      Draw Numbers-->
-            <div class="col-md-6" style="border: 1px solid #ccc">
-              <h6 class="mt-3">Draw Numbers</h6>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[0]">{{ formData.numbers[0] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[1]">{{ formData.numbers[1] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[2]">{{ formData.numbers[2] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[3]">{{ formData.numbers[3] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[4]">{{ formData.numbers[4] }}</div>
-            </div>
-
-          <!--     Machine Numbers       -->
-            <div class="col-md-6" style="border: 1px solid #ccc">
-              <h6 class="mt-3">Machine Numbers</h6>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[5]">{{ formData.numbers[5] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[6]">{{ formData.numbers[6] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[7]">{{ formData.numbers[7] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[8]">{{ formData.numbers[8] }}</div>
-                <div class="numbers-ball-selected d-inline-flex" v-if="formData.numbers[9]">{{ formData.numbers[9] }}</div>
-            </div>
+        <div class="col-md-6 my-2">
+          <h4 class="text-center text-danger">Draw Numbers</h4>
+          <div class="text-center">
+            <input type="number" min="1" step="1" max="90" v-model.number="drawNumbers[0]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="drawNumbers[1]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="drawNumbers[2]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="drawNumbers[3]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="drawNumbers[4]" class="num-box">
           </div>
-
-          <div class="row justify-content-center mt-3">
-            <div class="col-sm-6 col-lg-4">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">Date</div>
-                </div>
-                <input type="date" class="form-control" v-model="formData.date" onkeydown="return false">
-              </div>
-            </div>
+        </div>
+        <div class="col-md-6 my-2">
+          <h4 class="text-center">Machine Numbers</h4>
+          <div class="text-center">
+            <input type="number" min="1" step="1" max="90" v-model.number="machineNumbers[0]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="machineNumbers[1]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="machineNumbers[2]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="machineNumbers[3]" class="num-box">
+            <input type="number" min="1" step="1" max="90" v-model.number="machineNumbers[4]" class="num-box">
           </div>
-
-          <div class="row justify-content-center mt-3">
-            <div class="col-sm-6 col-lg-3">
-              <Button label="Submit" type="submit" class="p-button-rounded p-button-sm w-100"
-                      :loading="loading" loadingIcon="spinner-border spinner-border-sm"
-                      v-if="formData.numbers.length === 10"/>
-          </div>
-          </div>
-
-        </form>
+        </div>
       </div>
 
-</div>
+      <div class="text-center">
+        <b>Date </b><input type="date" onkeydown="return false;" v-model="date" class="mt-3 p-datepicker"><br><br>
+        <Button label="Submit" type="submit" class="p-button-rounded p-button-sm mt-4"
+                :loading="loading" loadingIcon="spinner-border spinner-border-sm"/>
+      </div>
+    </form>
+  </div>
+
 </template>
 
 
 <style scoped>
-.numbers-ball-container {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.numbers-ball, .numbers-ball-selected {
-  cursor: pointer;
-  background-color: #fff;
-  width: 35px;
-  height: 35px;
-  border-radius: 20px;
-  text-align: center;
-  align-items: center;
-  display: flex;
-  margin: 10px 8px 10px 0;
-  justify-content: center;
-  font-size: 19px;
-  font-weight: bold;
-  color: #2f3e4a;
-  user-select: none;
-}
-.numbers-ball:hover {
-  background: antiquewhite;
-}
-.numbers-ball.active, .numbers-ball-selected{
-  background-color: #e30c07;
-  color: #fff;
+.num-box {
+  width: 3.5em;
 }
 </style>

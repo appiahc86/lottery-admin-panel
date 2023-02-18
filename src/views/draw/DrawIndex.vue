@@ -6,7 +6,9 @@ import axios from "../../axios.js";
 import { useHomeStore } from "@/store/home";
 const store = useHomeStore();
 import moment from "moment";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const page = ref(1);
 const pageSize = ref(10);
 const totalRecords = ref(0);
@@ -50,7 +52,7 @@ const getData = async () => {
 
 }
 
-  getData();
+getData();
 
 //Pagination controls
 const onPage = (event) => {
@@ -119,8 +121,8 @@ const deleteDraw = async () => {
       drawNumbers.value = drawNumbers.value.filter(draw => {
         return draw.id.toString() !== selectedDraw.value.id.toString();
       })
-      return toast.add({severity:'success', summary: 'Success', detail: "Record Deleted successfully", life: 4000});
     }
+
   }catch (e) {
     if (e.response) return toast.add({severity:'warn', summary: 'Error', detail: e.response.data, life: 4000});
 
@@ -195,7 +197,19 @@ const deleteDraw = async () => {
             </Column>
             <Column field="" header="" :sortable="false" class="data-table-font-size">
               <template #body="{data}">
-                <td v-if="!data.closed">
+                <td v-if="!data.closed" title="Edit">
+                  <span class="pi pi-file-edit text-primary" style="cursor: pointer;"
+                        @click="router.push({
+                        name: 'edit-draw',
+                        params: {id: data.id, draw: data.numbers, machine: data.machineNumbers, date: data.drawDate}
+                        })">
+                  </span>
+                </td>
+              </template>
+            </Column>
+            <Column field="" header="" :sortable="false" class="data-table-font-size">
+              <template #body="{data}">
+                <td v-if="!data.closed" title="Delete">
                   <span class="pi pi-trash text-danger" style="cursor: pointer;" @click="confirmDelete(data)"></span>
                 </td>
               </template>
