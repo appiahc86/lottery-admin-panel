@@ -3,6 +3,7 @@ import {reactive, ref} from "vue";
 import axios from "@/axios";
 import { useHomeStore } from "@/store/home";
 import { formatNumber } from "@/functions";
+import moment from "moment";
 
 const store = useHomeStore();
 const searchTerm = ref(null);
@@ -171,8 +172,9 @@ const openMarkAsFailedDialog = () => markAsFailedDialog.value.showModal();
             </tr>
             <tr>
               <th>Date</th>
-              <td>  {{ new Date(transaction.localTransaction.createdAt).toLocaleDateString() }}
-                {{ new Date(transaction.localTransaction.createdAt).toLocaleTimeString() }}
+              <td>
+                {{ moment(transaction.localTransaction.createdAt).format("YYYY-MM-DD")}}
+                {{ moment(transaction.localTransaction.createdAt).format("h:mm:ss a") }}
               </td>
             </tr>
           </table>

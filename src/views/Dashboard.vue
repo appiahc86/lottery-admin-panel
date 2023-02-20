@@ -65,7 +65,7 @@ getData();
               <div class="text-xs fw-bold text-primary mb-1" style="font-size: 0.9em;">USERS COUNT</div>
                <div class="h6 mb-0 fw-bold" v-if="loading">
                 <span class="spinner-border spinner-border-sm"></span> loading...</div>
-              <div class="h6 mb-0 fw-bold">&nbsp; {{ formatNumber(userCount) }}</div>
+              <div class="h6 mb-0 fw-bold">&nbsp; {{ userCount.toLocaleString() }}</div>
             </div>
             <div class="col-auto">
               <span class="text-black-50" style="font-size: 250%">&#128101;</span>

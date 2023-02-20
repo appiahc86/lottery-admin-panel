@@ -6,6 +6,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { useHomeStore } from "@/store/home";
 const store = useHomeStore();
+import moment from "moment";
 
 const loading = ref(null);
 const transactions = ref([]);
@@ -83,7 +84,7 @@ const onPage = (event) => {
           <Column field="createdAt" header="Date" :sortable="true" class="data-table-font-size">
             <template #body="{data}">
               <td>
-                {{ new Date(data.createdAt).toLocaleDateString() }} {{ new Date(data.createdAt).toLocaleTimeString() }}
+                {{ moment(data.createdAt).format("YYYY-MM-DD")}} {{ moment(data.createdAt).format("h:mm:ss a") }}
               </td>
             </template>
           </Column>

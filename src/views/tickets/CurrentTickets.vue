@@ -96,7 +96,14 @@ const total = computed(() => {
                 </td>
               </template>
             </Column>
-            <Column field="amount" header="Amount" :sortable="false" class="data-table-font-size">
+            <Column field="amount" header="Perm Amount" :sortable="false" class="data-table-font-size">
+              <template #body="{data}">
+                <td>
+                  {{ formatNumber(data.amount) }}
+                </td>
+              </template>
+            </Column>
+            <Column field="payable" header="Payable" :sortable="false" class="data-table-font-size">
               <template #body="{data}">
                 <td>
                   {{ formatNumber(data.payable) }}
