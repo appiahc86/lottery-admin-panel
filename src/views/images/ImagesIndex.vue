@@ -105,7 +105,6 @@ const deleteImage = async () => {
 
     if (response.status === 200) {
       images.value = [response.data.images, []];
-      return toast.add({severity:'success', summary: 'Success', detail: 'Image Deleted', life: 4000});
     }
   }catch (e) {
     if (e.response) return  toast.add({severity:'warn', summary: 'Error', detail: e.response.data, life: 4000});

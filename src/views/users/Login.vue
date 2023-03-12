@@ -53,7 +53,6 @@ const login = async () => {
     if (response.status === 200) {
       store.setToken(response.data.token);
       store.setUser(response.data.user);
-      toast.add({severity:'success', summary: 'Thanks', detail: 'You are logged in', life: 4000});
       return router.push({name: 'home'});
     }
 
