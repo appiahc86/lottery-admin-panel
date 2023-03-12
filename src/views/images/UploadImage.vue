@@ -18,7 +18,7 @@ onMounted(() => {
       headers:  { 'Authorization': `Bearer ${store.token}`},
       autoProcessQueue: false,
       acceptedFiles: "image/*",
-      maxFilesize: 100000,
+      maxFilesize: 500000,
 
   });
 })
@@ -35,7 +35,7 @@ const upload =  async () => {
     const queuedFiles = myDropzone.getQueuedFiles();
     if (!queuedFiles.length) return  toast.add({severity:'warn', detail: "Please select images first", life: 4000});
     loading.value = true;
-     myDropzone.processQueue();
+     await myDropzone.processQueue();
   }catch (e) {
     if (e.response) return  toast.add({severity:'warn', summary: 'Error', detail: e.response.data, life: 4000});
 
