@@ -10,17 +10,17 @@ let myDropzone;
 
 onMounted(() => {
 
-   myDropzone = new Dropzone("#my-form", {
-      paramName: "images", // The name that will be used to transfer the file
-      method: "post",
-      parallelUploads: 5,
-      uploadMultiple: true,
-      headers:  { 'Authorization': `Bearer ${store.token}`},
-      autoProcessQueue: false,
-      acceptedFiles: "image/*",
-      maxFilesize: 500000,
-
-  });
+  //  myDropzone = new Dropzone("#my-form", {
+  //     paramName: "images", // The name that will be used to transfer the file
+  //     method: "post",
+  //     parallelUploads: 5,
+  //     uploadMultiple: true,
+  //     headers:  { 'Authorization': `Bearer ${store.token}`},
+  //     autoProcessQueue: false,
+  //     acceptedFiles: "image/*",
+  //     maxFilesize: 500000,
+  //
+  // });
 })
 
 
@@ -52,6 +52,46 @@ const upload =  async () => {
 }
 
 
+const fileInput = ref();
+const handleUpload = async (e) => {
+  try {
+
+    const files = fileInput.value.files;
+    if (!files.length) return  toast.add({severity:'warn', detail: 'Please select image file', life: 4000});
+
+    loading.value = true;
+    const formData = new FormData();
+
+    for (let file of files) {
+      formData.append('images[]', file);
+    }
+
+    await axios.post('/admin/uploads',
+        formData,
+        {
+          headers: {
+            'Authorization': `Bearer ${store.token}`,
+            'content-type': 'multipart/form-data'
+          }
+        }
+    )
+
+    e.target.reset();
+
+  }catch (e) {
+    if (e.response) return  toast.add({severity:'warn', summary: 'Error', detail: e.response.data, life: 4000});
+
+    if (e.request && e.request.status === 0) {
+      return  toast.add({
+        severity:'error', summary: 'Error',
+        detail: 'Sorry, Connection to Server refused. Please check your internet connection or try again later',
+        life: 4000});
+    }
+
+    return toast.add({severity:'warn', summary: 'Error',
+      detail: 'Sorry, something went wrong. Please try again later', life: 4000})
+  }finally { loading.value = false; }
+}
 
 </script>
 
@@ -70,12 +110,18 @@ const upload =  async () => {
 <!--      <p>Images will be displayed here</p>-->
 <!--    </template>-->
 
-  <form :action="axios.defaults.baseURL+'/admin/uploads'" class="dropzone" id="my-form"></form>
+<!--  <form :action="axios.defaults.baseURL+'/admin/uploads'" class="dropzone" id="my-form"></form>-->
 
-  <div class="text-center">
-    <Button label="Upload" type="button" :loading="loading" loadingIcon="spinner-border spinner-border-sm"
-            class="p-button  p-button-rounded mt-3 mx-2" @click="upload" />
-  </div>
+  <form @submit.prevent="handleUpload">
+    <input type="file" ref="fileInput" multiple>
+
+    <div class="text-center">
+      <Button label="Upload" type="submit" :loading="loading" loadingIcon="spinner-border spinner-border-sm"
+              class="p-button  p-button-rounded mt-3 mx-2"/>
+    </div>
+  </form>
+
+
 
 </template>
 
