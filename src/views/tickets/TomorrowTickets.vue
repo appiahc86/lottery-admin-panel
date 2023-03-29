@@ -11,19 +11,19 @@ const store = useHomeStore();
 const loading = ref(false);
 const tickets = ref([]);
 
-socket.on("current-tickets", (data) => {
- tickets.value.unshift(data);
+socket.on("tomorrow-tickets", (data) => {
+  tickets.value.unshift(data);
 })
 
 
-//Get today's tickets
+//Get tomorrow's tickets
 const getTickets = async () => {
 
   try {
     loading.value = true;
 
     const response = await  axios.post('/admin/tickets/current-tickets',
-        JSON.stringify({day: 'today'}),
+        JSON.stringify({day: 'tomorrow'}),
         {
           headers: { 'Authorization': `Bearer ${store.token}`}
         }
@@ -63,7 +63,7 @@ const total = computed(() => {
 
 <template>
   <div class="container-fluid">
-    <h2 class="text-center mt-4">Today's Tickets
+    <h2 class="text-center mt-4 text-primary">Tomorrow's Tickets
       <span class="pi pi-sync" style="cursor: pointer;" title="Reload Data" @click="getTickets" v-if="!loading"></span>
       <span class="spinner-border spinner-border-sm" v-if="loading"></span>
     </h2>

@@ -19,8 +19,8 @@ onMounted(() => {
       autoProcessQueue: false,
       acceptedFiles: "image/*",
       maxFilesize: 500000,
-
   });
+
 })
 
 
@@ -32,6 +32,7 @@ const loading = ref(false);
 const upload =  async () => {
 
   try {
+
     const queuedFiles = myDropzone.getQueuedFiles();
     if (!queuedFiles.length) return  toast.add({severity:'warn', detail: "Please select images first", life: 4000});
     loading.value = true;
@@ -97,6 +98,7 @@ const upload =  async () => {
 
 <template>
 
+
   <h5 class="mt-3">Upload Images</h5>
 <!--  <FileUpload name="images[]" :url="axios.defaults.baseURL + '/admin/uploads'" @upload="upload($event)"-->
 <!--                @error="errorHandler($event)" :multiple="true" accept="image/*" :maxFileSize="200000"-->
@@ -111,7 +113,6 @@ const upload =  async () => {
 <!--    </template>-->
 
   <form :action="axios.defaults.baseURL+'/admin/uploads'" class="dropzone" id="my-form"></form>
-
 
 
     <div class="text-center">

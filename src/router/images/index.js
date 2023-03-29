@@ -1,5 +1,5 @@
-import ImagesIndex from "../../views/images/ImagesIndex.vue";
-import UploadImage from "../../views/images/UploadImage.vue";
+import ImagesIndex from "@/views/images/ImagesIndex";
+import UploadImage from "@/views/images/UploadImage";
 
 const imagesRouter = [
     {

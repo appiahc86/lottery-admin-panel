@@ -74,9 +74,26 @@ const logout = () => {
          <section>
             <router-link :to="{name: 'client-users'}"><span>&#128101;</span> Users</router-link>
         </section>
+<!--      <section>-->
+<!--        <router-link :to="{name: 'current-tickets'}"><span>&#11088;</span> Today's Tickets</router-link>-->
+<!--      </section>-->
+
       <section>
-        <router-link :to="{name: 'current-tickets'}"><span>&#11088;</span> Today's Ticikets</router-link>
+        <div class="dropdown">
+          <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <span>&#11088;</span>
+            Tickets
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark w-100">
+            <li><router-link :to="{name: 'current-tickets'}">
+              <span class="pi pi-angle-double-down"></span>&nbsp; Today's Tickets</router-link></li>
+
+            <li><router-link :to="{name: 'tomorrow-tickets'}">
+              <span class="pi pi-angle-double-right"></span>&nbsp; Tomorrow's Tickets </router-link></li>
+          </ul>
+        </div>
       </section>
+
         <section>
          <div class="dropdown">
           <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
