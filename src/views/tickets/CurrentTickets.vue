@@ -12,7 +12,8 @@ const loading = ref(false);
 const tickets = ref([]);
 
 socket.on("current-tickets", (data) => {
- tickets.value.unshift(data);
+ tickets.value.push(data);
+  tickets.value.map((item, index) => item.count = index + 1);
 })
 
 
@@ -31,6 +32,7 @@ const getTickets = async () => {
 
     if (response.status === 200){
       tickets.value = response.data;
+      if (tickets.value.length) tickets.value.map((item, index) => item.count = index + 1);
     }
 
 
@@ -59,6 +61,7 @@ const total = computed(() => {
   return total;
 })
 
+
 </script>
 
 <template>
@@ -83,6 +86,13 @@ const total = computed(() => {
               <h6 class="text-white fw-bold">Loading data Please wait. <span class="spinner-border spinner-border-sm"></span></h6>
             </template>
 
+
+
+            <Column header="#" :sortable="false" class="data-table-font-size">
+              <template #body="{data}">
+                {{ data.count.toLocaleString() }}
+              </template>
+            </Column>
             <Column field="user" header="User" :sortable="false" class="data-table-font-size">
               <template #body="{data}">
                 <td>
