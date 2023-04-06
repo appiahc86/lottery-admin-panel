@@ -103,7 +103,7 @@ const saveData = async () => {
       </div>
 
       <div class="text-center">
-        <b>Date </b><input type="date" onkeydown="return false;" v-model="date" class="mt-3 p-datepicker"><br><br>
+        <b>Date </b><input type="date" onkeydown="return false;" v-model="date" class="mt-3 "><br><br>
         <Button label="Submit" type="submit" class="p-button-rounded p-button-sm mt-4"
                 :loading="loading" loadingIcon="spinner-border spinner-border-sm"/>
       </div>

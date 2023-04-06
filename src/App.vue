@@ -90,6 +90,12 @@ const logout = () => {
 
             <li><router-link :to="{name: 'tomorrow-tickets'}">
               <span class="pi pi-angle-double-right"></span>&nbsp; Tomorrow's Tickets </router-link></li>
+
+            <li><router-link :to="{name: 'search-tickets'}">
+              <span class="pi pi-search-plus"></span>&nbsp; Search Daily Tickets </router-link></li>
+            <hr>
+            <li><router-link :to="{name: 'winners'}">
+              <span class="pi pi-users"></span>&nbsp; Winnings </router-link></li>
           </ul>
         </div>
       </section>
