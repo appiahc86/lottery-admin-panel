@@ -140,8 +140,14 @@ const logout = () => {
           <ul class="dropdown-menu dropdown-menu-dark w-100">
             <li><router-link :to="{name: 'transactions'}">
               <span class="pi pi-copy"></span>&nbsp; View All</router-link></li>
-            <li><router-link :to="{name: 'single-transaction'}">
-              <span class="pi pi-search"></span>&nbsp;Search Transaction</router-link></li>
+            <hr>
+            <li><router-link :to="{name: 'deposits'}">
+              <span class="pi pi-copy"></span>&nbsp; Deposits</router-link></li>
+            <li><router-link :to="{name: 'withdrawals'}">
+              <span class="pi pi-copy"></span>&nbsp; Withdrawals</router-link></li>
+            <hr>
+            <li><router-link :to="{name: 'search-transaction'}">
+              <span class="pi pi-search"></span>&nbsp;Transaction Lookup</router-link></li>
           </ul>
         </div>
       </section>

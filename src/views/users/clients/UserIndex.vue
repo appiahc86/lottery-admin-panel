@@ -130,6 +130,13 @@ const onPage = (event) => {
               </td>
             </template>
           </Column>
+          <Column field="name" header="Name" sortable class="data-table-font-size">
+            <template #body="{data}">
+              <td class="text-capitalize">
+                {{ data?.name.toLowerCase() }}
+              </td>
+            </template>
+          </Column>
           <Column field="balance" header="Balance" sortable class="data-table-font-size">
             <template #body="{data}">
               <td>
