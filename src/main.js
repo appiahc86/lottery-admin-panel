@@ -6,6 +6,7 @@ import router from "./router/index.js";
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
+import Vue3Apexcharts from "vue3-apexcharts";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -21,4 +22,5 @@ app.use(PrimeVue);
 app.use(ToastService);
 app.use(router);
 app.use(pinia);
+app.use(Vue3Apexcharts);
 app.mount('#app');

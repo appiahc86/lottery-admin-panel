@@ -83,6 +83,7 @@ const deposit = async () => {
     const response = await  axios.post('/admin/transactions/deposit/',
         {
           userId: userRecord.value.id,
+          firstDeposit: userRecord.value.firstDeposit,
           amount: amount.value
         },
         {

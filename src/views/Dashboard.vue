@@ -1,6 +1,6 @@
 <script setup>
 import axios from "@/axios";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 const loading = ref(false);
 import {useHomeStore} from "@/store/home";
 import {formatNumber} from "@/functions";
@@ -27,6 +27,12 @@ const getData = async () => {
       deposits.value = response.data.deposits;
       withdrawals.value = response.data.withdrawals;
       annualWinnings.value = response.data.annualWinnings;
+
+      pieChartSeries.value[0] = deposits.value;
+      pieChartSeries.value[1] = withdrawals.value;
+
+      lineChartSeries[0].data[0] = deposits.value;
+      lineChartSeries[0].data[1] = withdrawals.value;
     }
 
   }catch (e) {
@@ -47,6 +53,52 @@ const getData = async () => {
 getData();
 
 
+
+
+//Graph
+//Line chart data
+const lineChartOptions = reactive({
+  chart: {
+    id: 'line-chart',
+    zoom: {enabled: false}
+  },
+  stroke: { curve: 'straight'},
+  title: {
+    text: 'Today\'s Deposits And Withdrawals',
+    align: 'left'
+  },
+  grid: {
+    row: {
+      colors: ['#f3f3f3', 'transparent'],
+      opacity: 0.5
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: ['Deposits', 'Withdrawals']
+  }
+})
+const lineChartSeries = reactive([
+  {
+    name: 'Transactions',
+    data: [0,0]
+  }
+])
+
+//PieChart data
+const chartOptions = reactive({
+  labels: ['Deposits', 'Withdrawals' ],
+  title: {
+    text: 'Today\'s Deposits And Withdrawals',
+    align: 'center'
+  },
+})
+const pieChartSeries = ref([0, 0]);
+
+
+
 </script>
 
 <template>
@@ -56,7 +108,7 @@ getData();
   <div class="row mb-3">
 
     <h4 class="text-black-50 my-3"><b>DASHBOARD</b></h4>
-            <!--Products-->
+            <!--USERS COUNT-->
     <div class="col-md-6 col-lg-3 mb-3">
       <div class="card shadow h-100 py-2 border-primary border-4 border-bottom-0 border-top-0 border-end-0">
         <div class="card-body">
@@ -74,7 +126,7 @@ getData();
         </div>
       </div>
     </div>
-                  <!-- Purchases -->
+                  <!-- ANNUAL WINNINGS -->
     <div class="col-md-6 col-lg-3 mb-3">
       <div class="card shadow h-100 py-2 border-warning border-4 border-bottom-0 border-top-0 border-end-0">
         <div class="card-body">
@@ -113,7 +165,7 @@ getData();
       </div>
     </div>
 
-                   <!-- Annual Sales -->
+                   <!-- TODAY'S DEPOSITS -->
     <div class="col-md-6 col-lg-3 mb-3">
       <div class="card shadow h-100 py-2 border-success border-4 border-bottom-0 border-top-0 border-end-0">
         <div class="card-body">
@@ -135,6 +187,28 @@ getData();
     </div>
 
   </div>
+
+
+  <!--    Chart area -->
+  <div class="row mt-4">
+    <div class="col-8 mt-4">
+      <div class="card shadow mb-1">
+        <div class="card-body">
+          <apexchart height="300" type="line" :series="lineChartSeries" :options="lineChartOptions"></apexchart>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 mt-4">
+      <div class="card mb-1 shadow">
+        <div class="card-body">
+          <apexchart height="300" type="pie" :options="chartOptions" :series="pieChartSeries"></apexchart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
   </div>
 
 </template>

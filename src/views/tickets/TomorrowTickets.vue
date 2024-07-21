@@ -9,12 +9,13 @@ import {formatNumber} from "@/functions";
 
 const store = useHomeStore();
 const loading = ref(false);
+const recording = ref(false);
 const tickets = ref([]);
 
-socket.on("tomorrow-tickets", (data) => {
-  tickets.value.push(data);
-  tickets.value.map((item, index) => item.count = index + 1);
-})
+// socket.on("tomorrow-tickets", (data) => {
+//   tickets.value.push(data);
+//   tickets.value.map((item, index) => item.count = index + 1);
+// })
 
 
 //Get tomorrow's tickets
@@ -49,6 +50,7 @@ const getTickets = async () => {
 
 getTickets();
 
+
 //Calculate total
 const total = computed(() => {
   let total = 0;
@@ -60,6 +62,39 @@ const total = computed(() => {
 
   return total;
 })
+
+
+//Mark as Recorded
+const record = async (id) => {
+  try {
+
+    recording.value = true;
+    const response = await  axios.post('/admin/tickets/record',
+        JSON.stringify({id}),
+        {
+          headers: { 'Authorization': `Bearer ${store.token}`}
+        }
+    )
+
+    if (response.status === 200){
+      tickets.value.map((ticket) => {
+        if (ticket.id.toString() === id.toString()) {
+          ticket.recorded = true;
+        }
+      })
+    }
+  }catch (e) {
+    if (e.response) return toast.add({severity:'warn', summary: 'Error', detail: e.response.data, life: 4000});
+
+    if (e.request && e.request.status === 0) {
+      return toast.add({severity:'warn', summary: 'Error', detail: 'Sorry, Connection to Server refused. Please check your internet connection or try again later', life: 4000});
+    }
+    return toast.add({severity:'warn', summary: 'Error', detail: 'Sorry, something went wrong. Please try again later', life: 4000});
+
+  }finally {
+    recording.value = false;
+  }
+}
 
 </script>
 
@@ -79,7 +114,8 @@ const total = computed(() => {
                      class="p-datatable-sm p-datatable-striped p-datatable-hoverable-rows p-datatable-gridlines"
                      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport
                    RowsPerPageDropdown" responsiveLayout="scroll" :rowsPerPageOptions="[10,25, 50]"
-                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                     :rowClass="({ recorded }) => recorded ? 'bg-success text-white': ''">
 
             <template #loading>
               <h6 class="text-white fw-bold">Loading data Please wait. <span class="spinner-border spinner-border-sm"></span></h6>
@@ -123,6 +159,16 @@ const total = computed(() => {
               <template #body="{data}">
                 <td>
                   {{ moment(data.createdAt).format('YYYY-MM-DD') }} {{ moment(data.createdAt).format('h:mm:ss a') }}
+                </td>
+              </template>
+            </Column>
+            <Column field="recorded" header="Recorded" :sortable="false" class="data-table-font-size">
+              <template #body="{data}">
+                <td class="text-capitalize">
+                  <template v-if="!data.recorded">
+                    <button :class="recording ? 'spinner-border spinner-border-sm' : ''"
+                            :disabled="recording" @click="record(data.id)"></button>
+                  </template>
                 </td>
               </template>
             </Column>
