@@ -164,8 +164,12 @@ const onPage = (event) => {
               <td>0{{ searchedUser.phone }}</td>
             </tr>
             <tr>
+              <th>Name</th>
+              <td class="text-capitalize">{{ searchedUser?.name }}</td>
+            </tr>
+            <tr>
               <th>Network</th>
-              <td>{{ searchedUser.network }}</td>
+              <td class="text-capitalize">{{ searchedUser.network }}</td>
             </tr>
             <tr>
               <th>Acc. Balance</th>
