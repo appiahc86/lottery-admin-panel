@@ -1,21 +1,10 @@
-import TransactionsIndex from "../../views/transactions/TransactionsIndex.vue";
 import SearchTransaction from "../../views/transactions/SearchTransaction.vue";
 import WithdrawalsView from "@/views/transactions/WithdrawalsView.vue";
 import DepositsView from "@/views/transactions/DepositsView.vue";
+import ViewDeposits from "@/views/transactions/ViewDeposits.vue";
+import ViewWithdrawals from "@/views/transactions/ViewWithdrawals.vue";
 
 const transactionsRouter = [
-    {
-        path: '/transactions',
-        name: 'transactions',
-        component: TransactionsIndex,
-        meta: {requiresAuth: true}
-    },
-    {
-        path: '/transactions/search',
-        name: 'search-transaction',
-        component: SearchTransaction,
-        meta: {requiresAuth: true}
-    },
     {
         path: '/transactions/deposit',
         name: 'deposits',
@@ -28,6 +17,24 @@ const transactionsRouter = [
         component: WithdrawalsView,
         meta: {requiresAuth: true}
     },
+    {
+        path: '/transactions/view-deposits',
+        name: 'view-deposits',
+        component: ViewDeposits,
+        meta: {requiresAuth: true}
+    },
+    {
+        path: '/transactions/view-withdrawals',
+        name: 'view-withdrawals',
+        component: ViewWithdrawals,
+        meta: {requiresAuth: true}
+    },
+    {
+        path: '/transactions/search',
+        name: 'search-transaction',
+        component: SearchTransaction,
+        meta: {requiresAuth: true}
+    }
 ]
 
 export default transactionsRouter;

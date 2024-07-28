@@ -115,7 +115,10 @@ const approve = async () => {
 
     return toast.add({severity:'warn', summary: 'Error', detail: 'Sorry, something went wrong. Please try again later',
       life: 4000});
-  }finally { dialogLoading.value = false; }
+  }finally {
+    dialogLoading.value = false;
+    approveDialog.value.close();
+  }
 
 }
 
@@ -168,7 +171,10 @@ const decline = async () => {
 
 <template>
   <div class="container-fluid">
-    <h2 class="text-center mt-4">Pending Withdrawals</h2>
+    <h2 class="text-center mt-4">Pending Withdrawals
+      <span class="pi pi-sync" style="cursor: pointer;" title="Reload Data" @click="getWithdrawals" v-if="!loading"></span>
+      <span class="spinner-border spinner-border-sm" v-if="loading"></span>
+    </h2>
     <div class="row">
       <div class="col">
 
